@@ -9,7 +9,7 @@ const sendEthButton = document.querySelector('.sendEthButton');
 
 let accounts = [];
 
-//var socket = io();
+var socket = io();
 
 ethereumButton.addEventListener('click', () => {
     //Will Start the metamask extension
@@ -18,7 +18,7 @@ ethereumButton.addEventListener('click', () => {
 
     //Making sure spreadsheet implementation is working
     console.log("peeking spreadsheet");
-    //socket.emit('peekSpreadsheet', 'Sheet1!A1:B2');
+    socket.emit('peekSpreadsheet', 'Sheet1!A1:B2');
 });
 
 //Sending Ethereum to an address
