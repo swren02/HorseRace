@@ -28,14 +28,8 @@ server.listen(3000, () => {
 function peekSpreadsheet(range) {
     console.log("In peekSpreadsheet");
     const {google} = require('googleapis');
-    /*google.load("client:auth2", function() {
-      google.auth2.init({client_id: process.env.GOOGLE_APPLICATION_CREDENTIALS.client_id});
-    });*/
-
-    //const auth = google.auth.getClient({ scopes : ['https://www.googleapis.com/auth/spreadsheets.readonly']});
     const sheets = google.sheets('v4');
-    console.log(process.env.SPREADSHEET_ID);
-    console.log("test3");
+
     sheets.spreadsheets.values.get({
       spreadsheetId : process.env.SPREADSHEET_ID,
       range : range,
@@ -50,3 +44,49 @@ function peekSpreadsheet(range) {
       }
     });
   }
+
+function placeBetSpreadsheet(address, betAmount, betToken) {
+  console.log("In placeBetSpreadsheet");
+  const {google} = require('googleapis');
+  const sheets = google.sheets('v4');
+
+  sheets.spreadsheets.values.append({
+    spreadsheetId : process.env.SPREADSHEET_ID,
+    range : "Sheet1!A1:C1",
+    valueInputOption : "USER_ENTERED",
+    resource: {
+      "majorDimension": "ROWS",
+      "range": "Sheet1!A1:C1",
+      "values": [
+        [
+          address,
+          betAmount,
+          betToken
+        ]
+      ]
+    },
+    key : process.env.API_KEY,
+  });
+}
+
+//Start smart contract using data in sheets to payout people
+function payout() {
+  //Initiate smart contract
+  //Maybe think about saving a local copy of the sheet before clearing it
+  clearSpreadsheet();
+  return;
+}
+
+//Clears the spreadsheet to get ready for the next round of betting
+function clearSpreadsheet() {
+  console.log("In clearSpreadsheet");
+  const {google} = require('googleapis');
+  const sheets = google.sheets('v4');
+
+  sheets.spreadsheets.values.clear({
+    spreadsheetId : process.env.SPREADSHEET_ID,
+    range : "Sheet1!A3:C",
+    resource : {},
+    key : process.env.API_KEY
+  });
+}
