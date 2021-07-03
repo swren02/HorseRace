@@ -90,3 +90,10 @@ function clearSpreadsheet() {
     key : process.env.API_KEY
   });
 }
+
+function calculateOdds() {
+  //Get data from spread sheet
+  //Calculate odds
+  //Display odds
+}
+
