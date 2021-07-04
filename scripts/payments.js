@@ -24,7 +24,7 @@ ethereumButton.addEventListener('click', () => {
 //Sending Ethereum to an address
 sendEthButton.addEventListener('click', sendEth);
 
-async function sendEth() {
+async function sendEth(amount, token) {
   const value = '0x29a2241af62c0000'
   const address = ethereum.selectedAddress;
   var hasError = false;
@@ -54,5 +54,6 @@ async function sendEth() {
     if (!hasError) {
       //Change address in spreadsheet to match their new balance, add address if it doesn't exist
       console.log('transaction successful');
+      socket.emit('placeBetSpreadsheet', address, amount, token);
     }
 }
