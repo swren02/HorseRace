@@ -5,10 +5,35 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+const https = require("https");
 
 app.get('/', (req, res) => {
+  https
+  .get("https://api.covalenthq.com/v1/pricing/tickers/?tickers=ETH,BTC,LINK&key=ckey_fe4422917d3c488daaa97b1fab4", resp => {
+    let data = "";
+
+    // A chunk of data has been recieved.
+    resp.on("data", chunk => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result. ETH, BTC, LINK, the strange ordering is a covalent bug.
+    resp.on("end", () => {
+      let priceDataETH = JSON.parse(data).data.items[0].quote_rate;
+      let priceDataBTC = JSON.parse(data).data.items[2].quote_rate;
+      let priceDataLINK = JSON.parse(data).data.items[1].quote_rate;
+      console.log(priceDataETH);
+      console.log(priceDataBTC);
+      console.log(priceDataLINK);
+      });
+    })
+  .on("error", err => {
+    console.log("Error: " + err.message);
+  });
+
   res.sendFile(__dirname + "/index.html");
 });
+
 
 app.get('/scripts/payments.js', function (req, res) {
   res.sendFile(__dirname + "/scripts/payments.js");
