@@ -8,10 +8,10 @@ const io = new Server(server);
 const https = require("https");
 
 const Web3 = require('web3')
-const axios = require('axios')
+//const axios = require('axios')
 const EthereumTx = require('ethereumjs-tx')
-const log = require('ololog').configure({ time: true })
-const ansi = require('ansicolor').nice
+//const log = require('ololog').configure({ time: true })
+//const ansi = require('ansicolor').nice
 
 app.get('/', (req, res) => {
   https
@@ -165,11 +165,10 @@ function payoutAddress(address, payout) {
   var infura_api_key = "SOMEONE SET THIS UP";
 
   // Need access to my path and file system
-  import path from 'path'
+  const path = require('path');
   var fs = require('fs');
 
   // Ethereum javascript libraries needed
-  import Web3 from 'Web3'
   var Tx = require('ethereumjs-tx');
 
   // Rather than using a local copy of geth, interact with the ethereum blockchain via infura.io
