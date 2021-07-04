@@ -25,10 +25,13 @@ server.listen(3000, () => {
 });
 
 //Prints part of the spreadsheet value for testing
-function peekSpreadsheet(range) {
+async function peekSpreadsheet(range) {
     console.log("In peekSpreadsheet");
     const {google} = require('googleapis');
-    const sheets = google.sheets('v4');
+
+    const auth = await google.auth.getClient({scopes : ['https://www.googleapis.com/auth/spreadsheets']});
+    const sheets = google.sheets({version : 'v4', auth : auth});
+
 
     sheets.spreadsheets.values.get({
       spreadsheetId : process.env.SPREADSHEET_ID,
@@ -45,11 +48,14 @@ function peekSpreadsheet(range) {
     });
   }
 
-function placeBetSpreadsheet(address, betAmount, betToken) {
+async function placeBetSpreadsheet(address, betAmount, betToken) {
   console.log("In placeBetSpreadsheet");
   const {google} = require('googleapis');
-  const sheets = google.sheets('v4');
 
+  const auth = await google.auth.getClient({scopes : ['https://www.googleapis.com/auth/spreadsheets']});
+  const sheets = google.sheets({version : 'v4', auth : auth});
+
+  console.log("Making request");
   sheets.spreadsheets.values.append({
     spreadsheetId : process.env.SPREADSHEET_ID,
     range : "Sheet1!A1:C1",
@@ -65,8 +71,10 @@ function placeBetSpreadsheet(address, betAmount, betToken) {
         ]
       ]
     },
-    key : process.env.API_KEY,
+    //key : process.env.API_KEY,
   });
+
+  console.log("request done");
 }
 
 //Start smart contract using data in sheets to payout people
@@ -78,16 +86,18 @@ function payout() {
 }
 
 //Clears the spreadsheet to get ready for the next round of betting
-function clearSpreadsheet() {
+async function clearSpreadsheet() {
   console.log("In clearSpreadsheet");
   const {google} = require('googleapis');
-  const sheets = google.sheets('v4');
+  
+  const auth = await google.auth.getClient({scopes : ['https://www.googleapis.com/auth/spreadsheets']});
+  const sheets = google.sheets({version : 'v4', auth : auth});
+
 
   sheets.spreadsheets.values.clear({
     spreadsheetId : process.env.SPREADSHEET_ID,
     range : "Sheet1!A3:C",
     resource : {},
-    key : process.env.API_KEY
   });
 }
 
@@ -97,3 +107,4 @@ function calculateOdds() {
   //Display odds
 }
 
+clearSpreadsheet();
