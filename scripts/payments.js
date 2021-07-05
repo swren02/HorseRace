@@ -25,7 +25,7 @@ ethereumButton.addEventListener('click', () => {
 sendEthButton.addEventListener('click', sendEth);
 
 async function sendEth(amount, token) {
-  const value = '0x29a2241af62c0000'
+  const value = document.getElementById('num').value * 10**18
   const address = ethereum.selectedAddress;
   var hasError = false;
 
@@ -39,7 +39,7 @@ async function sendEth(amount, token) {
         {
           from: address,
           to: '0xA20c3Be74ddEFf2c37111dA52498d83B71d6D12A',
-          value: '0x29a2241af62c0000',
+          value: value.toString(16),
           gasPrice: '0x09184e72a000',
           gas: '0x2710',
         },
