@@ -44,6 +44,10 @@ app.get('/', (req, res) => {
 app.get('/scripts/payments.js', function (req, res) {
   res.sendFile(__dirname + "/scripts/payments.js");
 });
+ 
+app.get('/favicon-96x96.png', function(req, res) {
+  res.sendFile(__dirname + '/favicon-96x96.png');
+});
 
 io.on('connection', (socket) => {
     socket.on('peekSpreadsheet', (range) => {
